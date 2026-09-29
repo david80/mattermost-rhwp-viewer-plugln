@@ -1,0 +1,540 @@
+/* Mattermost HWP Viewer Stylesheet */
+
+.hwp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  color: #1e293b;
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Malgun Gothic", "맑은 고딕", Roboto, "Helvetica Neue", sans-serif;
+  user-select: none;
+}
+
+/* Header Toolbar */
+.hwp-toolbar {
+  height: 56px;
+  min-height: 56px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+
+.hwp-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  max-width: 40%;
+}
+
+.hwp-file-badge {
+  background: #3b82f6;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.hwp-file-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hwp-file-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hwp-file-meta {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Center Zoom Controls */
+.hwp-toolbar-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 3px 6px;
+  border-radius: 8px;
+}
+
+.hwp-tool-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.hwp-tool-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.hwp-tool-btn:active {
+  background: #cbd5e1;
+}
+
+.hwp-zoom-label {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 48px;
+  text-align: center;
+  color: #1e293b;
+}
+
+/* Right Action Buttons */
+.hwp-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hwp-btn-action,
+a.hwp-btn-action {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+  text-decoration: none !important;
+}
+
+.hwp-btn-action:hover,
+a.hwp-btn-action:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+}
+
+/* Primary Highlighted Download Button */
+.hwp-btn-download,
+a.hwp-btn-download {
+  background: #2563eb !important;
+  border: 1px solid #1d4ed8 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25) !important;
+}
+
+.hwp-btn-download:hover,
+a.hwp-btn-download:hover {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.35) !important;
+}
+
+.hwp-btn-download span,
+a.hwp-btn-download span {
+  color: #ffffff !important;
+}
+
+.hwp-btn-close {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  border: 1px solid #fecaca !important;
+  font-weight: 600 !important;
+}
+
+.hwp-btn-close:hover {
+  background: #fca5a5 !important;
+  color: #991b1b !important;
+}
+
+/* Body / Viewer Viewport */
+.hwp-viewport {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  position: relative;
+  background: #525659;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 16px 120px 16px;
+  user-select: text;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #2d3238;
+}
+
+/* High visibility custom scrollbar for Windows / Chrome / Edge / Electron */
+.hwp-viewport::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.hwp-viewport::-webkit-scrollbar-track {
+  background: #25282c;
+  border-left: 1px solid #3c424a;
+}
+
+.hwp-viewport::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 7px;
+  border: 3px solid #25282c;
+}
+
+.hwp-viewport::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Floating Quick Scroll Navigation Panel */
+.hwp-floating-scroll-bar {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  padding: 8px;
+  border-radius: 28px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hwp-floating-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #334155;
+  color: #ffffff;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  user-select: none;
+}
+
+.hwp-floating-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+  transform: scale(1.12);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5);
+  border-color: #60a5fa;
+}
+
+.hwp-floating-btn:active {
+  transform: scale(0.95);
+}
+
+/* Document Page (A4 Paper Style) */
+.hwp-document-wrapper {
+  transition: transform 0.1s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hwp-doc-container,
+.hwpx-container,
+.unified-doc-container {
+  width: 794px; /* A4 standard web width */
+  min-height: 1123px; /* A4 aspect */
+  height: auto !important;
+  overflow: visible !important;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  padding: 48px 56px 80px 56px;
+  box-sizing: border-box;
+  color: #111827;
+  line-height: 1.65;
+  font-size: 14px;
+}
+
+/* Unified & HWPX specific styling */
+.hwpx-page,
+.unified-section {
+  margin-bottom: 24px;
+}
+
+.hwpx-p,
+.unified-p {
+  margin: 0 0 6px 0;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.unified-p.empty-p {
+  min-height: 1.2em;
+}
+
+.unified-text-run {
+  display: inline;
+}
+
+.hwpx-table,
+.unified-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+
+.hwpx-td,
+.unified-td {
+  border: 1px solid #94a3b8;
+  padding: 6px 10px;
+  vertical-align: top;
+}
+
+.unified-picture-wrapper {
+  display: block;
+  text-align: center;
+  margin: 8px 0;
+}
+
+.unified-image {
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.unified-page-break {
+  border-top: 1px dashed #cbd5e1;
+  margin: 24px 0;
+  position: relative;
+}
+
+.unified-page-break::after {
+  content: '페이지 구분';
+  position: absolute;
+  top: -9px;
+  right: 12px;
+  font-size: 10px;
+  color: #94a3b8;
+  background: #ffffff;
+  padding: 0 4px;
+}
+
+/* Loading & Error States */
+.hwp-loading-box,
+.hwp-render-error {
+  margin: auto;
+  background: #ffffff;
+  padding: 36px 48px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  max-width: 480px;
+}
+
+.hwp-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: hwp-spin 0.8s linear infinite;
+  margin: 0 auto 16px auto;
+}
+
+@keyframes hwp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hwp-error-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.hwp-error-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #dc2626;
+  margin: 0 0 8px 0;
+}
+
+.hwp-error-desc {
+  font-size: 13px;
+  color: #475569;
+  margin: 0 0 16px 0;
+}
+
+.hwp-error-detail {
+  font-family: monospace;
+  font-size: 11px;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #64748b;
+  word-break: break-all;
+  margin-bottom: 16px;
+}
+
+.hwp-download-fallback {
+  display: inline-block;
+  background: #2563eb;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+.hwp-download-fallback:hover {
+  background: #1d4ed8;
+}
+
+/* Print Stylesheet */
+@media print {
+  .hwp-toolbar {
+    display: none !important;
+  }
+  .hwp-modal-overlay {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    height: auto;
+    width: auto;
+  }
+  .hwp-viewport {
+    background: transparent;
+    padding: 0;
+    overflow: visible;
+  }
+  .hwp-document-wrapper {
+    transform: none !important;
+  }
+  .hwp-doc-container,
+  .hwpx-container,
+  .unified-doc-container,
+  .rhwp-container {
+    box-shadow: none;
+    padding: 0;
+    width: 100% !important;
+  }
+}
+
+/* Paper container styles */
+.hwp-doc-container [style*="page"] {
+  min-height: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+  margin: 20px auto 40px auto !important;
+  border-radius: 2px !important;
+}
+
+/* Safe Text Mode Paper */
+.hwp-safe-text-paper {
+  background: #ffffff !important;
+  padding: 48px 56px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  max-width: 850px !important;
+  width: 90% !important;
+  margin: 24px auto 60px auto !important;
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 800px !important;
+  overflow: visible !important;
+  text-align: left !important;
+}
+
+.hwp-safe-text-banner {
+  margin-bottom: 24px !important;
+  padding: 10px 16px !important;
+  background: #eff6ff !important;
+  border-left: 4px solid #2563eb !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  color: #1e40af !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-height: auto !important;
+  height: auto !important;
+  box-shadow: none !important;
+  text-align: left !important;
+}
+
+.hwp-safe-text-content {
+  color: #1e293b !important;
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+  word-break: keep-all !important;
+  text-align: left !important;
+}
+
+.hwp-safe-text-line {
+  margin: 8px 0 !important;
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+  color: #1e293b !important;
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+  text-align: left !important;
+}
+
+/* RHWP Vector SVG Viewer */
+.rhwp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 0 60px 0;
+  width: 100%;
+}
+
+.rhwp-page {
+  width: 794px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: transform 0.1s ease;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.rhwp-page svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}

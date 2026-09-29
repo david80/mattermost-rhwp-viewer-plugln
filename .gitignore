@@ -1,0 +1,7 @@
+node_modules/
+/dist/
+webapp/node_modules/
+webapp/dist/
+server/dist/plugin-*
+.DS_Store
+*.log

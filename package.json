@@ -1,0 +1,24 @@
+{
+  "name": "mattermost-rhwp-viewer",
+  "version": "1.0.2",
+  "description": "Mattermost plugin for viewing HWP/HWPX documents",
+  "scripts": {
+    "build:server": "cd server && GOOS=linux GOARCH=amd64 go build -o dist/plugin-linux-amd64 . && GOOS=darwin GOARCH=arm64 go build -o dist/plugin-darwin-arm64 . && GOOS=windows GOARCH=amd64 go build -o dist/plugin-windows-amd64.exe .",
+    "build:webapp": "npm --prefix webapp run build",
+    "bundle": "node scripts/bundle.js",
+    "build": "npm run build:server && npm run build:webapp && npm run bundle",
+    "clean": "rm -rf dist webapp/dist server/dist/plugin-*"
+  },
+  "keywords": [
+    "mattermost",
+    "plugin",
+    "hwp",
+    "hwpx",
+    "viewer"
+  ],
+  "author": "David Lee",
+  "license": "MIT",
+  "devDependencies": {
+    "tar": "^6.2.1"
+  }
+}

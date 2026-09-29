@@ -1,0 +1,17 @@
+{
+  "id": "mattermost-rhwp-viewer",
+  "name": "Mattermost RHWP Viewer",
+  "description": "Preview Hangul Word Processor (.hwp, .hwpx) documents directly inside Mattermost without downloading.",
+  "version": "1.0.2",
+  "min_server_version": "6.0.0",
+  "server": {
+    "executables": {
+      "linux-amd64": "server/dist/plugin-linux-amd64",
+      "darwin-arm64": "server/dist/plugin-darwin-arm64",
+      "windows-amd64": "server/dist/plugin-windows-amd64.exe"
+    }
+  },
+  "webapp": {
+    "bundle_path": "webapp/dist/main.js"
+  }
+}
