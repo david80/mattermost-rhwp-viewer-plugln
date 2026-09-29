@@ -5,9 +5,14 @@ import '../styles/viewer.css';
 interface HwpPreviewModalProps {
   fileInfo: FileInfo;
   post?: any;
+  onClose?: () => void;
+  onModalDismissed?: () => void;
+  handleClose?: () => void;
+  [key: string]: any;
 }
 
-export const HwpPreviewModal: React.FC<HwpPreviewModalProps> = ({ fileInfo }) => {
+export const HwpPreviewModal: React.FC<HwpPreviewModalProps> = (props) => {
+  const { fileInfo } = props;
   const [serverPages, setServerPages] = useState<string[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,24 +76,78 @@ export const HwpPreviewModal: React.FC<HwpPreviewModalProps> = ({ fileInfo }) =>
     };
   }, [fileId]);
 
+  const handleClose = useCallback(() => {
+    // 1. Call Mattermost callback props if provided
+    if (typeof props.onClose === 'function') {
+      try { props.onClose(); } catch { /* ignore */ }
+    }
+    if (typeof props.onModalDismissed === 'function') {
+      try { props.onModalDismissed(); } catch { /* ignore */ }
+    }
+    if (typeof props.handleClose === 'function') {
+      try { props.handleClose(); } catch { /* ignore */ }
+    }
+
+    // 2. Click Mattermost's native modal close button across all versions
+    const closeSelectors = [
+      '#closePreviewModal',
+      '.file-preview-modal__close',
+      'button[data-testid="filePreviewModalClose"]',
+      '.file-preview-modal__header button:last-child',
+      '.file-preview-modal__header button:last-of-type',
+      '.file-preview-modal button[aria-label="Close"]',
+      '.file-preview-modal button[aria-label="닫기"]',
+      'button[aria-label="Close"]',
+      'button[aria-label="닫기"]',
+      '.modal-close',
+      '.close',
+    ];
+
+    for (const sel of closeSelectors) {
+      const btn = document.querySelector(sel) as HTMLElement;
+      if (btn && typeof btn.click === 'function') {
+        try { btn.click(); } catch { /* ignore */ }
+      }
+    }
+
+    // 3. Dispatch standard Escape keydown & keyup events
+    const escDown = new KeyboardEvent('keydown', {
+      key: 'Escape',
+      code: 'Escape',
+      keyCode: 27,
+      which: 27,
+      bubbles: true,
+      cancelable: true,
+    });
+    document.dispatchEvent(escDown);
+    window.dispatchEvent(escDown);
+
+    // 4. Guarantee Mattermost's underlying black overlay is dismissed
+    const mmModals = document.querySelectorAll('.file-preview-modal, .view-image__modal');
+    mmModals.forEach((el) => {
+      (el as HTMLElement).style.display = 'none';
+    });
+    const backdrops = document.querySelectorAll('.modal-backdrop, .file-preview-modal__backdrop');
+    backdrops.forEach((el) => {
+      (el as HTMLElement).style.display = 'none';
+    });
+
+    // 5. Dismiss our modal
+    setIsOpen(false);
+  }, [props]);
+
   // Handle ESC key to close
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
         handleClose();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-    const closeBtn = document.querySelector('.file-preview-modal__close, .modal-close') as HTMLElement;
-    if (closeBtn) {
-      closeBtn.click();
-    }
-  }, []);
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [handleClose]);
 
   const scrollByAmount = useCallback((delta: number) => {
     viewportRef.current?.scrollBy({ top: delta, behavior: 'smooth' });
