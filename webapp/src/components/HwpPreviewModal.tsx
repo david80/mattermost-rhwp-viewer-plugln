@@ -77,62 +77,40 @@ export const HwpPreviewModal: React.FC<HwpPreviewModalProps> = (props) => {
   }, [fileId]);
 
   const handleClose = useCallback(() => {
-    // 1. Call Mattermost callback props if provided
-    if (typeof props.onClose === 'function') {
-      try { props.onClose(); } catch { /* ignore */ }
-    }
+    // 1. Prioritize Mattermost's official FilePreviewModal callback
     if (typeof props.onModalDismissed === 'function') {
-      try { props.onModalDismissed(); } catch { /* ignore */ }
-    }
-    if (typeof props.handleClose === 'function') {
-      try { props.handleClose(); } catch { /* ignore */ }
-    }
-
-    // 2. Click Mattermost's native modal close button across all versions
-    const closeSelectors = [
-      '#closePreviewModal',
-      '.file-preview-modal__close',
-      'button[data-testid="filePreviewModalClose"]',
-      '.file-preview-modal__header button:last-child',
-      '.file-preview-modal__header button:last-of-type',
-      '.file-preview-modal button[aria-label="Close"]',
-      '.file-preview-modal button[aria-label="닫기"]',
-      'button[aria-label="Close"]',
-      'button[aria-label="닫기"]',
-      '.modal-close',
-      '.close',
-    ];
-
-    for (const sel of closeSelectors) {
-      const btn = document.querySelector(sel) as HTMLElement;
-      if (btn && typeof btn.click === 'function') {
-        try { btn.click(); } catch { /* ignore */ }
+      try {
+        props.onModalDismissed();
+      } catch (err) {
+        console.error('[RHWP] Failed to call onModalDismissed:', err);
+      }
+    } else if (typeof props.onClose === 'function') {
+      try {
+        props.onClose();
+      } catch (err) {
+        console.error('[RHWP] Failed to call onClose:', err);
+      }
+    } else if (typeof props.handleClose === 'function') {
+      try {
+        props.handleClose();
+      } catch (err) {
+        console.error('[RHWP] Failed to call handleClose:', err);
+      }
+    } else {
+      // Fallback: Click only the native modal close button if no callback exists
+      const closeBtn = document.querySelector(
+        '#closePreviewModal, [data-testid="filePreviewModalClose"], .file-preview-modal__header button:last-child'
+      ) as HTMLElement;
+      if (closeBtn && typeof closeBtn.click === 'function') {
+        try {
+          closeBtn.click();
+        } catch (err) {
+          console.error('[RHWP] Failed to trigger modal close button:', err);
+        }
       }
     }
 
-    // 3. Dispatch standard Escape keydown & keyup events
-    const escDown = new KeyboardEvent('keydown', {
-      key: 'Escape',
-      code: 'Escape',
-      keyCode: 27,
-      which: 27,
-      bubbles: true,
-      cancelable: true,
-    });
-    document.dispatchEvent(escDown);
-    window.dispatchEvent(escDown);
-
-    // 4. Guarantee Mattermost's underlying black overlay is dismissed
-    const mmModals = document.querySelectorAll('.file-preview-modal, .view-image__modal');
-    mmModals.forEach((el) => {
-      (el as HTMLElement).style.display = 'none';
-    });
-    const backdrops = document.querySelectorAll('.modal-backdrop, .file-preview-modal__backdrop');
-    backdrops.forEach((el) => {
-      (el as HTMLElement).style.display = 'none';
-    });
-
-    // 5. Dismiss our modal
+    // Dismiss custom view state
     setIsOpen(false);
   }, [props]);
 
