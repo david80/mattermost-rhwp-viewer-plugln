@@ -1,6 +1,6 @@
 {
   "name": "mattermost-rhwp-viewer-webapp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Mattermost HWP Viewer Webapp",
   "main": "dist/main.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "dev": "webpack --mode=development --watch"
   },
   "dependencies": {
-    "@rhwp/core": "^0.8.6",
+    "@rhwp/core": "^0.8.7",
     "buffer": "^6.0.3",
     "hwp.js": "^0.0.3",
     "hwpx-js": "^0.1.2",

@@ -1,7 +1,7 @@
 # Mattermost RHWP Viewer (`mattermost-rhwp-viewer`)
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.2-blue.svg" alt="Version 1.0.2" />
+  <img src="https://img.shields.io/badge/version-1.0.3-blue.svg" alt="Version 1.0.3" />
   <img src="https://img.shields.io/badge/Mattermost%20Server->=6.0.0-green.svg" alt="Mattermost 6.0+" />
   <img src="https://img.shields.io/badge/Platform-Linux%20|%20macOS%20|%20Windows-brightgreen.svg" alt="Platforms" />
   <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="License MIT" />
@@ -90,7 +90,7 @@ npm run build
 
 Once the build succeeds, the deployable bundle will be generated at:
 ```
-dist/mattermost-rhwp-viewer-1.0.2.tar.gz
+dist/mattermost-rhwp-viewer-1.0.3.tar.gz
 ```
 
 Individual build scripts:
@@ -104,7 +104,7 @@ Individual build scripts:
 
 1. Log in to Mattermost as a System Administrator.
 2. Navigate to **System Console > Plugins > Plugin Management**.
-3. Under **Upload Plugin**, choose `dist/mattermost-rhwp-viewer-1.0.2.tar.gz` and click **Upload**.
+3. Under **Upload Plugin**, choose `dist/mattermost-rhwp-viewer-1.0.3.tar.gz` and click **Upload**.
 4. In the **Installed Plugins** list, locate **Mattermost RHWP Viewer** and click **Enable**.
 5. Refresh your browser or restart the desktop app (`Cmd+Shift+R` or `Ctrl+F5`).
 6. Click any `.hwp` or `.hwpx` file attachment in a channel to view the document.
@@ -201,7 +201,7 @@ npm run build
 
 빌드가 완료되면 배포용 패키지가 생성됩니다:
 ```
-dist/mattermost-rhwp-viewer-1.0.2.tar.gz
+dist/mattermost-rhwp-viewer-1.0.3.tar.gz
 ```
 
 개별 빌드 명령어:
@@ -215,7 +215,7 @@ dist/mattermost-rhwp-viewer-1.0.2.tar.gz
 
 1. Mattermost 시스템 관리자 계정으로 로그인합니다.
 2. **시스템 콘솔 (System Console) > 플러그인 관리 (Plugin Management)** 메뉴로 이동합니다.
-3. **플러그인 업로드 (Upload Plugin)** 항목에서 빌드된 `dist/mattermost-rhwp-viewer-1.0.2.tar.gz` 파일을 선택하고 업로드합니다.
+3. **플러그인 업로드 (Upload Plugin)** 항목에서 빌드된 `dist/mattermost-rhwp-viewer-1.0.3.tar.gz` 파일을 선택하고 업로드합니다.
 4. 설치된 플러그인 목록에서 **Mattermost RHWP Viewer**를 찾아 **활성화 (Enable)**를 클릭합니다.
 5. 브라우저 캐시 새로고침(`Cmd+Shift+R` 또는 `Ctrl+F5`)을 진행합니다.
 6. 대화방에 업로드된 한글 문서(`.hwp`, `.hwpx`)를 클릭하면 별도 뷰어 프로그램 없이 바로 열람할 수 있습니다.
