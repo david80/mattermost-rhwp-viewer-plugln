@@ -117,6 +117,11 @@ Individual build scripts:
   * Hard-refresh your browser (`Ctrl+F5` or `Cmd+Shift+R`) to ensure the updated webapp bundle is loaded.
 * **Server binary execution permission (Linux)**:
   * Ensure the Mattermost process has execution permissions for files in `plugins/mattermost-rhwp-viewer/server/dist/bin/linux_amd64/rhwp`.
+* **`error while loading shared libraries: libfontconfig.so.1` (Linux)**:
+  * Since rhwp 0.9.0 the Linux binary links against fontconfig/freetype. Install them on the Mattermost server (or bake them into your Docker image):
+    ```bash
+    apt-get update && apt-get install -y libfontconfig1 libfreetype6 libstdc++6
+    ```
 
 ---
 
@@ -228,6 +233,11 @@ dist/mattermost-rhwp-viewer-1.0.4.tar.gz
   * 브라우저 캐시로 인해 이전 버전 플러그인이 로드되어 있을 수 있습니다. 브라우저 강력 새로고침(`Ctrl+F5` 또는 `Cmd+Shift+R`)을 수행하십시오.
 * **Linux 서버에서 변환 오류가 발생하는 경우**:
   * 플러그인 디렉터리 내 바이너리(`server/dist/bin/linux_amd64/rhwp`)의 실행 권한(`chmod +x`)을 확인하십시오.
+* **`error while loading shared libraries: libfontconfig.so.1` 오류 (Linux)**:
+  * rhwp 0.9.0부터 Linux 바이너리가 fontconfig/freetype 라이브러리를 필요로 합니다. Mattermost 서버(또는 Docker 이미지)에 설치하십시오:
+    ```bash
+    apt-get update && apt-get install -y libfontconfig1 libfreetype6 libstdc++6
+    ```
 
 ---
 
