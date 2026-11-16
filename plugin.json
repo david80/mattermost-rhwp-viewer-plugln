@@ -2,7 +2,7 @@
   "id": "mattermost-rhwp-viewer",
   "name": "Mattermost RHWP Viewer",
   "description": "Preview Hangul Word Processor (.hwp, .hwpx) documents directly inside Mattermost without downloading.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "min_server_version": "6.0.0",
   "server": {
     "executables": {
