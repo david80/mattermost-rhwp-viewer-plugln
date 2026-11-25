@@ -16,6 +16,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/mattermost/mattermost/server/public/model"
 	"github.com/mattermost/mattermost/server/public/plugin"
 )
 
@@ -33,12 +34,36 @@ type PreviewResponse struct {
 }
 
 func (p *Plugin) OnActivate() error {
-	p.cacheDir = filepath.Join(os.TempDir(), "mattermost-rhwp-cache")
+	version, err := p.pluginVersion()
+	if err != nil {
+		return err
+	}
+
+	// Scope the cache by plugin version so an engine upgrade never serves SVGs rendered by an older engine
+	p.cacheDir = filepath.Join(os.TempDir(), "mattermost-rhwp-cache", version)
 	if err := os.MkdirAll(p.cacheDir, 0755); err != nil {
 		p.API.LogError("Failed to create cache dir", "err", err.Error())
 	}
 	p.API.LogInfo("Mattermost RHWP Viewer plugin activated (rhwp server backend)")
 	return nil
+}
+
+// pluginVersion reads the version from the manifest shipped in the plugin bundle.
+func (p *Plugin) pluginVersion() (string, error) {
+	bundleDir, err := p.API.GetBundlePath()
+	if err != nil {
+		return "", fmt.Errorf("failed to get bundle path: %w", err)
+	}
+
+	manifest, _, err := model.FindManifest(bundleDir)
+	if err != nil {
+		return "", fmt.Errorf("failed to read plugin manifest: %w", err)
+	}
+	if manifest.Version == "" {
+		return "", fmt.Errorf("plugin manifest in %s has no version", bundleDir)
+	}
+
+	return manifest.Version, nil
 }
 
 func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Request) {
